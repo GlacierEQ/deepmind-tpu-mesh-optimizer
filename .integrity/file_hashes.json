@@ -1,23 +1,23 @@
 {
-  "repo": "deepmind-tpu-mesh-optimizer",
-  "algorithm": "sha256",
-  "file_count": 16,
+  "file_count": 18,
   "hashes": {
-    "README.md": "fa542f6cda21398033239983ce739e875ba50ab8767492b7765c682c22285b23",
-    "AKOS.md": "d9b8782863dd6daa395cc400f87e6eed9ec9b0e117e1bb369ba13efcc82b38e9",
-    "AGENTS.md": "81653c0743c1849c277c831b5a199b94dd69906ab7ac5798911d568392ffea4d",
-    "HELIX_STRAND.md": "a191652b30e1bc5c79e5625eccd9b8152b2d6f38045b16b7fb9749ec3a92f5a6",
-    "mastermind_sidecar.py": "2181201724e2665c6ccacf7a5e4dce3161f9fabd77892454fc17c2325315cf80",
-    "SECURITY_AND_FLEET_OPS.md": "26141c0f07d95847d679de423ddb7bdee6f3e319d204383c89a58d6d3bb610c7",
-    "ISSUE_CONTRACT.md": "ed5af2ae92a08c5201588b8ac51c476f10eca8a31da0d4c37744d7a572abfd7f",
-    "HELIX.md": "0f4f8871e05549354a72169bf12a88500e289f5b5956440530084f2bee20c48e",
     ".pytest_cache/CACHEDIR.TAG": "37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4",
     ".pytest_cache/README.md": "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad",
-    ".pytest_cache/.gitignore": "3ed731b65d06150c138e2dadb0be0697550888a6b47eb8c45ecc9adba8b8e9bd",
-    ".pytest_cache/v/cache/nodeids": "dfdc384cac8ecf05e6050cd638b1f8dcdd19dab86f4bf9314255431017b2ff84",
     ".pytest_cache/v/cache/lastfailed": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    ".pytest_cache/v/cache/nodeids": "dfdc384cac8ecf05e6050cd638b1f8dcdd19dab86f4bf9314255431017b2ff84",
+    "AGENTS.md": "81653c0743c1849c277c831b5a199b94dd69906ab7ac5798911d568392ffea4d",
+    "AKOS.md": "d9b8782863dd6daa395cc400f87e6eed9ec9b0e117e1bb369ba13efcc82b38e9",
+    "HELIX.md": "0f4f8871e05549354a72169bf12a88500e289f5b5956440530084f2bee20c48e",
+    "HELIX_STRAND.md": "a191652b30e1bc5c79e5625eccd9b8152b2d6f38045b16b7fb9749ec3a92f5a6",
+    "ISSUE_CONTRACT.md": "ed5af2ae92a08c5201588b8ac51c476f10eca8a31da0d4c37744d7a572abfd7f",
+    "README.md": "712d51b27a987f55dec58fb84632945a7d675726895e01d2f0a09b7cb7e8cfcb",
+    "SECURITY_AND_FLEET_OPS.md": "26141c0f07d95847d679de423ddb7bdee6f3e319d204383c89a58d6d3bb610c7",
+    "hdl/tpu_matmul.v": "35150ab83ea773b8b9464e7fcbbe3d6b8c4b830aa25f0837bd7b8f72350b838f",
+    "mastermind_sidecar.py": "2181201724e2665c6ccacf7a5e4dce3161f9fabd77892454fc17c2325315cf80",
+    "src/mojo_tensor_kernel.mojo": "50c9a43a71c98fe3bf05271a9d9528d8520ed5cedeac020abd33b7a507ea8e54",
+    "src/tpu_mesh_optimizer.py": "ecf0d0a685dc9836dce8565fb0314b598f261340709c96bb95e59094a4f76862",
     "tests/test_mesh.py": "40dd726147fb6b2dca59f6f5ff6bc02cbfd162c98536ef315ec84062d78bd07b",
     "tests/test_tpu.py": "d7db3f7f457e51761e22f0c47b713d777e30464586e31224d5e3b766b4451204",
-    "src/tpu_mesh_optimizer.py": "ecf0d0a685dc9836dce8565fb0314b598f261340709c96bb95e59094a4f76862"
+    "tests/test_tpu_matmul.py": "52af15c28ea01aa7914aed4d93b5eda87e1639d571baf24bcee5a2cb5766022b"
   }
 }

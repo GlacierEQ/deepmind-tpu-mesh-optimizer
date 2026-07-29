@@ -1,28 +1,60 @@
-# Google DeepMind TPU Mesh Optimizer
+# DeepMind TPU Mesh Optimizer — TPU Hardware Accelerator 🧠
 
-> **Production Solution for Gemini Long-Context & TPU Pod Mesh Stalls**
+> **Systolic array matrix multiplication and Mojo SIMD tensor vectorization for Google Cloud TPU meshes.**
 
-## Overview
-Asynchronous Ring-Attention KV-sharding and multimodal pipeline balancer engine designed for Google DeepMind Gemini 1.5/2.0 Pro TPU Pod Mesh workloads.
-
-## Key Architecture
-- **Async Ring-Attention Kernel**: Hides Inter-Chip Interconnect (ICI) All-Reduce transfer latency behind GEMM compute ticks.
-- **Multimodal Pipeline Balancer**: Eliminates visual frame and text token bubble stalls across TPU v5p / Trillium slices.
-- **Double Helix Telemetry**: `mastermind_sidecar.py` & `.integrity/` self-healing sidecar.
-
-## Verification
-```bash
-PYTHONPATH=src python3 tests/test_tpu.py
-python3 mastermind_sidecar.py
-```
+[![Mojo](https://img.shields.io/badge/Mojo-SIMD-FF6B6B)]()
+[![Verilog](https://img.shields.io/badge/Verilog-RTL-green)]()
+[![Python](https://img.shields.io/badge/Python-3.9+-blue)]()
+[![Domain](https://img.shields.io/badge/Domain-TPU%20Acceleration-purple)]()
 
 ---
 
-## Fleet ops (transparent)
+## 🎯 For Recruiters & Hiring Managers
 
-This repo may include `.integrity/` (SHA-256 integrity) and/or a health sidecar.
-These are **documented fleet operations**, not covert implants. See [SECURITY_AND_FLEET_OPS.md](SECURITY_AND_FLEET_OPS.md).
+This repository implements a **TPU Mesh & Hardware Matrix Accelerator** — optimizing tensor operations on Google Cloud TPU (v4/v5p/v6e) topologies. It demonstrates:
 
-## Helix strand
+- **Mojo SIMD vectorization** achieving high-throughput tensor math at near-C speeds
+- **Verilog RTL systolic array design** for TPU hardware matrix multiplication logic
+- **Topological mesh optimization** reducing inter-chip interconnect latency across TPU pods
+- **Custom kernel compilation** bypassing high-level framework overhead
 
-See [HELIX_STRAND.md](HELIX_STRAND.md) — piston/spiral role in the portfolio double helix.
+**Why this matters**: Scaling large AI models requires understanding chip architectures down to systolic array dataflow and SIMD vector lanes.
+
+---
+
+## 🔬 For Engineers & Technical Reviewers
+
+### Architecture
+
+```
+High-Level Model ──→ Mojo SIMD Compiler ──→ TPU Mesh Topology Mapper
+                                                    │
+                                           Verilog Systolic Array
+                                            (Weight-Stationary)
+```
+
+### Core Components
+
+| Component | Language | Purpose |
+|---|---|---|
+| `mojo/tpu_kernel.mojo` | Mojo | High-performance SIMD tensor vectorization routines |
+| `hdl/tpu_matmul.v` | Verilog | Hardware systolic array RTL implementation |
+| `src/tpu_optimizer.py` | Python | Mesh topology optimizer and placement planner |
+| `tests/` | Python | Matrix multiplication verification test suite |
+
+---
+
+## 🤖 ML/AI & Programmatic Mesh Integration
+
+- **MCP Tool**: `tpu_mesh_status()` — TPU pod health and topology queryable by agents
+- **Mastermind Sidecar**: Telemetry bridge to APEX Highway mesh
+- **SHA-256 Integrity**: Tracked in `.integrity/file_hashes.json`
+
+---
+
+## ⚡ Quick Start
+
+```bash
+python3 src/tpu_optimizer.py
+python3 tests/test_tpu.py
+```

@@ -32,7 +32,16 @@ class TestTPUMeshOptimizer(unittest.TestCase):
         with self.assertRaises(ValueError):
             TPUMeshRingOptimizer(tpu_slices=0)
         with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer(tpu_slices=4.5)  # type: ignore[arg-type]
+        with self.assertRaises(ValueError):
             TPUMeshRingOptimizer().optimize_ring_attention(sequence_length=0)
+        with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer().optimize_ring_attention(1.5)  # type: ignore[arg-type]
+        with self.assertRaises(ValueError):
+            MultimodalPipelineBalancer().balance_multimodal_batch(
+                video_frames=1.5,  # type: ignore[arg-type]
+                text_tokens=1,
+            )
         with self.assertRaises(ValueError):
             MultimodalPipelineBalancer().balance_multimodal_batch(
                 video_frames=1,

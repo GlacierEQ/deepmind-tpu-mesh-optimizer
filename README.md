@@ -1,60 +1,62 @@
-# DeepMind TPU Mesh Optimizer — TPU Hardware Accelerator 🧠
+# TPU-Style Mesh Planning Study
 
-> **Systolic array matrix multiplication and Mojo SIMD tensor vectorization for Google Cloud TPU meshes.**
+Independent GlacierEQ portfolio work exploring deterministic mesh communication and compute-overlap arithmetic for TPU-style accelerator scenarios.
 
-[![Mojo](https://img.shields.io/badge/Mojo-SIMD-FF6B6B)]()
-[![Verilog](https://img.shields.io/badge/Verilog-RTL-green)]()
-[![Python](https://img.shields.io/badge/Python-3.9+-blue)]()
-[![Domain](https://img.shields.io/badge/Domain-TPU%20Acceleration-purple)]()
+**Status:** local scenario model + reference RTL/Mojo artifacts.  
+**Evidence token:** `MODELED_MESH_SCENARIO_NOT_TPU_MEASUREMENT`
 
----
+This repository is **not affiliated with, endorsed by, or operated by Google or Google DeepMind**. It does not claim proprietary TPU access, Google Cloud deployment, measured inter-chip performance, or production accelerator control.
 
-## 🎯 For Recruiters & Hiring Managers
+## Verified capability
 
-This repository implements a **TPU Mesh & Hardware Matrix Accelerator** — optimizing tensor operations on Google Cloud TPU (v4/v5p/v6e) topologies. It demonstrates:
+The canonical runnable surface is `src/tpu_mesh_optimizer.py` plus the Python tests in `tests/`.
 
-- **Mojo SIMD vectorization** achieving high-throughput tensor math at near-C speeds
-- **Verilog RTL systolic array design** for TPU hardware matrix multiplication logic
-- **Topological mesh optimization** reducing inter-chip interconnect latency across TPU pods
-- **Custom kernel compilation** bypassing high-level framework overhead
+It deterministically models:
 
-**Why this matters**: Scaling large AI models requires understanding chip architectures down to systolic array dataflow and SIMD vector lanes.
+- activation sharding across a configured mesh;
+- transfer time from an explicit link-bandwidth assumption;
+- compute time from an explicit FLOP-rate assumption;
+- modeled communication/compute overlap;
+- a simple multimodal token-balance suggestion.
 
----
+These outputs are **scenario arithmetic**, not measurements from TPU v4/v5/v6 hardware.
 
-## 🔬 For Engineers & Technical Reviewers
+## Engineering anatomy
 
-### Architecture
+| Surface | Evidence-bound role |
+|---|---|
+| `src/tpu_mesh_optimizer.py` | Canonical tested mesh timing/planning model |
+| `tests/test_mesh.py` | Mesh validation and arithmetic regression |
+| `tests/test_tpu.py` | Ring-attention and multimodal scenario regression |
+| `tests/test_tpu_matmul.py` | Local Python accumulator simulation; does not execute RTL |
+| `hdl/tpu_matmul.v` | Verilog systolic-array reference artifact; not exercised by the Python truth gate |
+| `src/mojo_tensor_kernel.mojo` | Mojo source example; not a current compiled-performance receipt |
+| `mastermind_sidecar.py` | Local status helper; not proof of APEX/Mastermind runtime integration |
 
-```
-High-Level Model ──→ Mojo SIMD Compiler ──→ TPU Mesh Topology Mapper
-                                                    │
-                                           Verilog Systolic Array
-                                            (Weight-Stationary)
-```
-
-### Core Components
-
-| Component | Language | Purpose |
-|---|---|---|
-| `mojo/tpu_kernel.mojo` | Mojo | High-performance SIMD tensor vectorization routines |
-| `hdl/tpu_matmul.v` | Verilog | Hardware systolic array RTL implementation |
-| `src/tpu_optimizer.py` | Python | Mesh topology optimizer and placement planner |
-| `tests/` | Python | Matrix multiplication verification test suite |
-
----
-
-## 🤖 ML/AI & Programmatic Mesh Integration
-
-- **MCP Tool**: `tpu_mesh_status()` — TPU pod health and topology queryable by agents
-- **Mastermind Sidecar**: Telemetry bridge to APEX Highway mesh
-- **SHA-256 Integrity**: Tracked in `.integrity/file_hashes.json`
-
----
-
-## ⚡ Quick Start
+## Native proof
 
 ```bash
-python3 src/tpu_optimizer.py
-python3 tests/test_tpu.py
+PYTHONPATH=src python -m pytest -q
 ```
+
+The repository-owned Public Truth Gate runs the Python proof on Python 3.11 and 3.13 and verifies that the public surface retains its modeled-evidence and non-affiliation boundaries.
+
+## Explicit nonclaims
+
+Current evidence does **not** establish:
+
+- execution on Google Cloud TPU hardware;
+- TPU v4/v5p/v6e performance;
+- measured ICI latency or bandwidth;
+- near-C Mojo throughput;
+- compiled custom TPU kernels;
+- Verilog synthesis, timing closure, or silicon behavior;
+- MCP tool registration;
+- live APEX/AKOS/Mastermind connectivity;
+- Google or Google DeepMind employment, endorsement, affiliation, or proprietary access.
+
+Those are higher evidence states and require separate hardware/runtime receipts.
+
+## Why the capability matters
+
+The engineering value is the explicit separation of **topology and communication assumptions from hardware claims**. The model gives a reproducible way to reason about sharding and overlap before a future accelerator experiment exists, while keeping the public portfolio honest about what has actually been measured.

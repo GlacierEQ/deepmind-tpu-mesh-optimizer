@@ -6,9 +6,29 @@ compile TPU kernels, or establish production accelerator performance.
 """
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 EVIDENCE_STATE = "MODELED_MESH_SCENARIO_NOT_TPU_MEASUREMENT"
+
+
+def _require_int(value: object, name: str, minimum: int) -> int:
+    if type(value) is not int or value < minimum:
+        raise ValueError(f"{name} must be an integer >= {minimum}")
+    return value
+
+
+def _require_finite(value: object, name: str, minimum: float, inclusive: bool) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be finite numeric input")
+    numeric = float(value)
+    if not math.isfinite(numeric):
+        raise ValueError(f"{name} must be finite")
+    invalid = numeric < minimum if inclusive else numeric <= minimum
+    if invalid:
+        operator = ">=" if inclusive else ">"
+        raise ValueError(f"{name} must be {operator} {minimum}")
+    return numeric
 
 
 @dataclass(frozen=True)
@@ -21,16 +41,14 @@ class MeshConfig:
     link_bw_gbps: float
 
     def __post_init__(self) -> None:
-        if self.chips < 1 or self.mesh_x < 1 or self.mesh_y < 1:
-            raise ValueError("mesh dims and chips must be >= 1")
+        _require_int(self.chips, "chips", 1)
+        _require_int(self.mesh_x, "mesh_x", 1)
+        _require_int(self.mesh_y, "mesh_y", 1)
+        _require_int(self.bytes_per_activation, "bytes_per_activation", 1)
         if self.mesh_x * self.mesh_y < self.chips:
             raise ValueError("mesh_x * mesh_y must cover chips")
-        if self.bytes_per_activation < 1:
-            raise ValueError("bytes_per_activation must be >= 1")
-        if self.flops_per_chip <= 0:
-            raise ValueError("flops_per_chip must be > 0")
-        if self.link_bw_gbps <= 0:
-            raise ValueError("link_bw_gbps must be > 0")
+        _require_finite(self.flops_per_chip, "flops_per_chip", 0.0, inclusive=False)
+        _require_finite(self.link_bw_gbps, "link_bw_gbps", 0.0, inclusive=False)
 
 
 class TPUMeshOptimizer:
@@ -40,10 +58,10 @@ class TPUMeshOptimizer:
         self.cfg = cfg
 
     def shard_activation_bytes(self, global_tokens: int) -> float:
-        if global_tokens < 1:
-            raise ValueError("global_tokens must be >= 1")
-        per = max(1, global_tokens // self.cfg.chips)
-        return float(per * self.cfg.bytes_per_activation)
+        tokens = _require_int(global_tokens, "global_tokens", 1)
+        # Exact average preserves the configured global token count. Padding is not modeled.
+        per_chip_tokens = tokens / self.cfg.chips
+        return per_chip_tokens * self.cfg.bytes_per_activation
 
     def transfer_ms(self, global_tokens: int) -> float:
         per_chip = self.shard_activation_bytes(global_tokens)
@@ -52,10 +70,9 @@ class TPUMeshOptimizer:
         return wire / bytes_per_ms
 
     def compute_tick_ms(self, flops_needed: float) -> float:
-        if flops_needed < 0:
-            raise ValueError("flops_needed must be >= 0")
+        flops = _require_finite(flops_needed, "flops_needed", 0.0, inclusive=True)
         total_flops = self.cfg.flops_per_chip * self.cfg.chips
-        return (flops_needed / total_flops) * 1000.0
+        return (flops / total_flops) * 1000.0
 
     def optimize(self, global_tokens: int, flops_needed: float) -> dict:
         t_tx = self.transfer_ms(global_tokens)
@@ -82,14 +99,13 @@ class TPUMeshRingOptimizer:
     """Ring-attention-oriented wrapper over the local mesh model."""
 
     def __init__(self, tpu_slices: int = 64, ici_bandwidth_gbps: float = 4800.0) -> None:
-        if tpu_slices < 1:
-            raise ValueError("tpu_slices must be >= 1")
-        side = int(max(1, tpu_slices**0.5))
-        while side * side < tpu_slices:
+        slices = _require_int(tpu_slices, "tpu_slices", 1)
+        side = int(max(1, slices**0.5))
+        while side * side < slices:
             side += 1
         self._opt = TPUMeshOptimizer(
             MeshConfig(
-                chips=tpu_slices,
+                chips=slices,
                 mesh_x=side,
                 mesh_y=side,
                 bytes_per_activation=2,
@@ -99,12 +115,11 @@ class TPUMeshRingOptimizer:
         )
 
     def optimize_ring_attention(self, sequence_length: int) -> dict:
-        if sequence_length < 1:
-            raise ValueError("sequence_length must be >= 1")
+        sequence = _require_int(sequence_length, "sequence_length", 1)
         # Explicit heuristic for a local scenario model, not measured TPU FLOPs.
-        flops = float(sequence_length) * float(sequence_length) * 64.0
-        result = self._opt.optimize(global_tokens=sequence_length, flops_needed=flops)
-        result["sequence_length"] = sequence_length
+        flops = float(sequence) * float(sequence) * 64.0
+        result = self._opt.optimize(global_tokens=sequence, flops_needed=flops)
+        result["sequence_length"] = sequence
         result["tpu_slices"] = self._opt.cfg.chips
         return result
 
@@ -115,12 +130,11 @@ class MultimodalPipelineBalancer:
     def balance_multimodal_batch(
         self, video_frames: int, text_tokens: int, tokens_per_frame: int = 256
     ) -> dict:
-        if video_frames < 0 or text_tokens < 0:
-            raise ValueError("counts must be >= 0")
-        if tokens_per_frame < 1:
-            raise ValueError("tokens_per_frame must be >= 1")
-        vision_tokens = video_frames * tokens_per_frame
-        total = vision_tokens + text_tokens
+        frames = _require_int(video_frames, "video_frames", 0)
+        text = _require_int(text_tokens, "text_tokens", 0)
+        per_frame = _require_int(tokens_per_frame, "tokens_per_frame", 1)
+        vision_tokens = frames * per_frame
+        total = vision_tokens + text
         if total == 0:
             return {
                 "balance_status": "EMPTY",
@@ -136,7 +150,7 @@ class MultimodalPipelineBalancer:
             "balance_status": status,
             "total_tokens": total,
             "vision_tokens": vision_tokens,
-            "text_tokens": text_tokens,
+            "text_tokens": text,
             "vision_fraction": round(ratio, 4),
             "suggested_text_tokens": vision_tokens,
             "evidence_state": EVIDENCE_STATE,

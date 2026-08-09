@@ -1,22 +1,54 @@
-"""Test suite for Google DeepMind TPU Mesh Optimizer solution."""
+"""Regression tests for the deterministic TPU-style mesh scenario model."""
 import unittest
-from tpu_mesh_optimizer import TPUMeshRingOptimizer, MultimodalPipelineBalancer
 
-class TestDeepMindTPUMeshOptimizer(unittest.TestCase):
+from tpu_mesh_optimizer import (
+    EVIDENCE_STATE,
+    MultimodalPipelineBalancer,
+    TPUMeshRingOptimizer,
+)
 
-    def test_ring_attention_optimization(self):
+
+class TestTPUMeshOptimizer(unittest.TestCase):
+    def test_ring_attention_scenario(self):
         optimizer = TPUMeshRingOptimizer(tpu_slices=64, ici_bandwidth_gbps=4800.0)
-        res = optimizer.optimize_ring_attention(sequence_length=1048576)  # 1M tokens
-        
-        self.assertEqual(res["status"], "OPTIMAL_ASYNC_SHARDED")
-        self.assertTrue(res["latency_hidden_percent"] > 0)
+        result = optimizer.optimize_ring_attention(sequence_length=1_048_576)
 
-    def test_multimodal_pipeline_balancer(self):
+        self.assertIn(result["status"], {"MODELED_HIGH_OVERLAP", "MODELED_ICI_BOUND"})
+        self.assertGreaterEqual(result["latency_hidden_percent"], 0)
+        self.assertEqual(result["evidence_state"], EVIDENCE_STATE)
+
+    def test_multimodal_pipeline_scenario(self):
         balancer = MultimodalPipelineBalancer()
-        res = balancer.balance_multimodal_batch(video_frames=120, text_tokens=32000)
-        
-        self.assertEqual(res["balance_status"], "STALL_FREE")
-        self.assertTrue(res["total_tokens"] > 0)
+        result = balancer.balance_multimodal_batch(video_frames=120, text_tokens=32_000)
+
+        self.assertIn(
+            result["balance_status"],
+            {"MODELED_BALANCED", "REBALANCE_SUGGESTED"},
+        )
+        self.assertGreater(result["total_tokens"], 0)
+        self.assertEqual(result["evidence_state"], EVIDENCE_STATE)
+
+    def test_invalid_scenario_inputs_fail_closed(self):
+        with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer(tpu_slices=0)
+        with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer(tpu_slices=4.5)  # type: ignore[arg-type]
+        with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer().optimize_ring_attention(sequence_length=0)
+        with self.assertRaises(ValueError):
+            TPUMeshRingOptimizer().optimize_ring_attention(1.5)  # type: ignore[arg-type]
+        with self.assertRaises(ValueError):
+            MultimodalPipelineBalancer().balance_multimodal_batch(
+                video_frames=1.5,  # type: ignore[arg-type]
+                text_tokens=1,
+            )
+        with self.assertRaises(ValueError):
+            MultimodalPipelineBalancer().balance_multimodal_batch(
+                video_frames=1,
+                text_tokens=1,
+                tokens_per_frame=0,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

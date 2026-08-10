@@ -1,0 +1,26 @@
+{
+  "schema": "glaciereq.operability-receipt.v1",
+  "repository": "GlacierEQ/deepmind-tpu-mesh-optimizer",
+  "at": "2026-08-10T04:12Z",
+  "source_sha": "6b07e57213e9d61d9bbefaa0aaca8e724f93b748b1fa7f9fc9b0501cb1149a23",
+  "entry": "scripts/operate.py",
+  "primary_output": {
+    "module": "tpu_mesh_optimizer",
+    "ok": true,
+    "repository": "GlacierEQ/deepmind-tpu-mesh-optimizer",
+    "smoke": {
+      "args": [
+        "1.0"
+      ],
+      "content_checked": true,
+      "invoked": true,
+      "kind": "class",
+      "method": "compute_tick_ms",
+      "module_local": true,
+      "name": "TPUMeshOptimizer",
+      "result": 1000.0
+    }
+  },
+  "dual_run_ok": true,
+  "result": "PASS"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "glaciereq.promotion-authority-grant.v1",
+  "repository": "GlacierEQ/deepmind-tpu-mesh-optimizer",
+  "source_sha": "6b07e57213e9d61d9bbefaa0aaca8e724f93b748b1fa7f9fc9b0501cb1149a23",
+  "proof_receipt_digest": "48c682d14c7cc595fe7922d583b39617d0f0c1b81057b492d48da3607a388a1e",
+  "not_after": 1788927149.234226,
+  "mac": "63e2756064c8a65a91c7b6733b20219ff51ee1169049c0194dfaa876671c5fb6",
+  "issuer": "local_operator_promotion_authority",
+  "verified": true,
+  "secret_ref": "src/promotion_authority.py::LOCAL_OPERATOR_SECRET"
+}

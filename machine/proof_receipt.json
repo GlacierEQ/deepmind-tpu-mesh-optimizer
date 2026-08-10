@@ -1,0 +1,31 @@
+{
+  "schema": "glaciereq.proof-receipt.v1",
+  "repository": "GlacierEQ/deepmind-tpu-mesh-optimizer",
+  "source_sha": "6b07e57213e9d61d9bbefaa0aaca8e724f93b748b1fa7f9fc9b0501cb1149a23",
+  "proof_id": "elite-deepmind-tpu-mesh-optimizer-1786335149",
+  "environment": {
+    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
+    "PYTHONPATH": "/Users/kcbflux/job-app/repos/deepmind-tpu-mesh-optimizer:/Users/kcbflux/job-app/repos/deepmind-tpu-mesh-optimizer/src",
+    "entry": "unittest"
+  },
+  "tests": [
+    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
+  ],
+  "adversarial_tests": [
+    "tests/test_adversarial.py"
+  ],
+  "runtime": {
+    "operate": "scripts/operate.py (x2)",
+    "dual_run_ok": true,
+    "proof_dual_run_ok": true
+  },
+  "result": "PASS",
+  "limitations": [
+    "not production deployed",
+    "reference implementation only"
+  ],
+  "timestamp": "2026-08-10T04:12Z",
+  "artifact_hashes": {
+    "operability_receipt": "8bf0f1ca7a5b90e471a661d964185646d6f12168cbf02e423afede3e4c0ae1cc"
+  }
+}

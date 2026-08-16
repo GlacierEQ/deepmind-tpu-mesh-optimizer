@@ -5,12 +5,31 @@
     "explicit-link-bandwidth-transfer-time-estimation",
     "explicit-flop-rate-compute-time-estimation",
     "modeled-communication-compute-overlap",
-    "deterministic-multimodal-token-balance-suggestion"
+    "deterministic-multimodal-token-balance-suggestion",
+    "apex-mass-recovery-enrolled"
   ],
   "operational_authority": false,
   "google_tpu_hardware_measurement": false,
   "tpu_kernel_execution": false,
   "verilog_synthesis_or_silicon_proven": false,
   "mojo_performance_proven": false,
-  "live_mcp_apex_mastermind_integration": false
+  "live_mcp_apex_mastermind_integration": false,
+  "recovery": {
+    "identity": "APEX_IS_THE_COUNTER_TO_CANONICAL_DESTRUCTION",
+    "law": "MAXIMUM_COHERENT_ADVANCE",
+    "program": "mass-job-repo-recovery",
+    "dual_plane": true
+  },
+  "planes": {
+    "verified": [
+      "deterministic-mesh-activation-sharding-model",
+      "explicit-link-bandwidth-transfer-time-estimation",
+      "explicit-flop-rate-compute-time-estimation",
+      "modeled-communication-compute-overlap",
+      "deterministic-multimodal-token-balance-suggestion"
+    ],
+    "implemented": [
+      "apex-mass-recovery-enrolled"
+    ]
+  }
 }

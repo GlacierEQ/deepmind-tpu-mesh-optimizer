@@ -9,7 +9,10 @@
     "explicit-link-bandwidth-transfer-time-estimation",
     "explicit-flop-rate-compute-time-estimation",
     "modeled-communication-compute-overlap",
-    "deterministic-multimodal-token-balance-suggestion"
+    "deterministic-multimodal-token-balance-suggestion",
+    "receipt-class-experiment-promotion-fence",
+    "modeled-to-compiled-evidence-separation",
+    "hardware-promotion-requires-compiled-evidence-chain"
   ],
   "gates": {
     "IDENTITY_RESOLVED": {
@@ -18,7 +21,7 @@
     },
     "CENTRAL_MECHANISM_PRESENT": {
       "status": "PASS",
-      "evidence": "src/tpu_mesh_optimizer.py"
+      "evidence": "src/tpu_mesh_optimizer.py + src/mesh_frontier.py + src/experiment_promotion.py"
     },
     "PRIOR_EXACT_HEAD_PROOF": {
       "status": "PASS",
@@ -35,7 +38,7 @@
     },
     "DETERMINISTIC_PROOF_GREEN": {
       "status": "PENDING_CANONICAL_CI",
-      "evidence": "machine-state and proof-matrix changes require fresh exact-current-head canonical proof"
+      "evidence": "current mesh planner and experiment-promotion extension require fresh exact-current-head canonical proof"
     },
     "CANONICAL_POSITION_RESOLVED": {
       "status": "PENDING"
@@ -56,5 +59,10 @@
     "promotion_receipts_are_non_authoritative_for_current_head": true,
     "placeholder_hyper_validated_identity_is_not_current_proof": true
   },
-  "evolution_cursor": "fresh_exact_head_ci_then_surface_reconciliation"
+  "evolution_cursor": "fresh_exact_head_ci_then_surface_reconciliation",
+  "current_head_extension": {
+    "mechanism": "src/experiment_promotion.py",
+    "tests": "tests/test_experiment_promotion.py",
+    "state": "IMPLEMENTED_CURRENT_HEAD_NATIVE_PROOF_REQUIRED"
+  }
 }

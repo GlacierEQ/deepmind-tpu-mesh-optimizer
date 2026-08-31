@@ -36,6 +36,15 @@ def main() -> None:
         "not proof of APEX/Mastermind runtime integration" in normalized,
         "mesh/runtime boundary missing",
     )
+    require(
+        "LOCAL_EXPERIMENT_PROMOTION_FENCE_NOT_TPU_AUTHORITY" in readme,
+        "experiment promotion evidence token missing",
+    )
+    require(
+        "modeled work cannot promote itself to compiled or hardware-measured evidence"
+        in normalized,
+        "evidence-level promotion boundary missing",
+    )
 
     allowed = {
         "deterministic-mesh-activation-sharding-model",
@@ -43,6 +52,9 @@ def main() -> None:
         "explicit-flop-rate-compute-time-estimation",
         "modeled-communication-compute-overlap",
         "deterministic-multimodal-token-balance-suggestion",
+        "receipt-class-experiment-promotion-fence",
+        "modeled-to-compiled-evidence-separation",
+        "hardware-promotion-requires-compiled-evidence-chain",
     }
     require(set(caps.get("capabilities", [])) == allowed, "capability allowlist drift")
     require(caps.get("operational_authority") is False, "operational authority must be false")

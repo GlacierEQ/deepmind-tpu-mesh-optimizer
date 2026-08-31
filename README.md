@@ -41,6 +41,22 @@ PYTHONPATH=src python -m pytest -q
 
 The repository-owned Public Truth Gate runs the Python proof on Python 3.11 and 3.13 and verifies that the public surface retains its modeled-evidence and non-affiliation boundaries.
 
+## Experiment promotion fence
+
+The current source adds `src/experiment_promotion.py` to keep modeled planning, local tests, compiled artifacts, and hardware measurements in separate evidence classes.
+
+`LOCAL_EXPERIMENT_PROMOTION_FENCE_NOT_TPU_AUTHORITY`
+
+The promotion order is:
+
+```text
+MODELED -> LOCAL_TESTED -> COMPILED -> HARDWARE_MEASURED
+```
+
+A test receipt can support only the local-tested level. A compile receipt requires test evidence first. Hardware evidence requires the compiled chain first. **Modeled work cannot promote itself to compiled or hardware-measured evidence.** Promotion attempts above the available receipt class return an explicit refusal receipt.
+
+This directly creates a place for future JAX/XLA or hardware receipts without allowing their absence to be hidden by the existing modeled mesh results.
+
 ## Explicit nonclaims
 
 Current evidence does **not** establish:

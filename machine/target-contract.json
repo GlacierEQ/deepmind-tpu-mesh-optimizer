@@ -5,18 +5,31 @@
     "family": "elite-estate"
   },
   "current": {
-    "state": "PROMOTED",
+    "state": "FUNCTIONAL_CANDIDATE",
     "implemented": true,
-    "tested": true,
-    "deployed": false
+    "tested_in_source": true,
+    "deployed": false,
+    "operational_authority": false
   },
   "nonclaims": [
-    "no employer affiliation",
+    "no Google or Google DeepMind affiliation, endorsement, employment, proprietary access, or TPU authority",
+    "no Google Cloud TPU hardware measurement or deployment",
+    "no current compiled XLA/custom-TPU-kernel evidence unless a compile receipt is supplied",
+    "no hardware-measured promotion without a chained hardware receipt",
     "no production deployment without receipt"
   ],
   "donor_plan": {
     "mode": "none",
     "donors": []
   },
-  "frozen_at": "2026-08-10T04:12Z"
+  "frozen_at": "2026-08-10T04:12Z",
+  "verified_scope": [
+    "deterministic mesh activation-sharding scenario model",
+    "explicit modeled transfer/compute/overlap arithmetic",
+    "Pareto mesh-frontier planning under explicit constraints",
+    "receipt-class experiment promotion fence",
+    "modeled, local-tested, compiled, and hardware-measured evidence levels remain distinct",
+    "compiled evidence requires test receipt and hardware evidence requires compiled receipt"
+  ],
+  "next_gate": "exact-current-head Python 3.11/3.12/3.13 public-truth proof including experiment-promotion fence tests"
 }

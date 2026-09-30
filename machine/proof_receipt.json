@@ -4,12 +4,12 @@
   "source_sha": "6b07e57213e9d61d9bbefaa0aaca8e724f93b748b1fa7f9fc9b0501cb1149a23",
   "proof_id": "elite-deepmind-tpu-mesh-optimizer-1786335149",
   "environment": {
-    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
-    "PYTHONPATH": "/Users/kcbflux/job-app/repos/deepmind-tpu-mesh-optimizer:/Users/kcbflux/job-app/repos/deepmind-tpu-mesh-optimizer/src",
+    "python": "${HOME}/job-app/excellence/.venv-elite/bin/python",
+    "PYTHONPATH": "${HOME}/job-app/repos/deepmind-tpu-mesh-optimizer:${HOME}/job-app/repos/deepmind-tpu-mesh-optimizer/src",
     "entry": "unittest"
   },
   "tests": [
-    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
+    "${HOME}/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
   ],
   "adversarial_tests": [
     "tests/test_adversarial.py"
